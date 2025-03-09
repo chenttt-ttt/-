@@ -1,0 +1,91 @@
+<!--tournaments.wxml-->
+<view class="page">
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索赛事" bindinput="onSearchInput" value="{{searchKeyword}}" confirm-type="search" />
+    <view class="filter-btn" bindtap="showFilterModal">
+      <image src="/images/filter.png"></image>
+    </view>
+  </view>
+
+  <view class="filter-tags" wx:if="{{activeFilters.length > 0}}">
+    <view class="filter-tag" wx:for="{{activeFilters}}" wx:key="index" bindtap="removeFilter" data-index="{{index}}">
+      {{item}} <text class="tag-close">×</text>
+    </view>
+  </view>
+
+  <view class="tournament-list">
+    <block wx:if="{{tournaments.length > 0}}">
+      <view class="tournament-card" wx:for="{{tournaments}}" wx:key="id" bindtap="goToTournamentDetail" data-id="{{item.id}}">
+        <image class="tournament-image" src="{{item.coverImage || '/images/default_tournament.png'}}" mode="aspectFill"></image>
+        <view class="tournament-info">
+          <view class="tournament-title">{{item.name}}</view>
+          <view class="tournament-sponsor" wx:if="{{item.sponsors && item.sponsors.length > 0}}">
+            赞助商: {{item.sponsors[0].name}}
+          </view>
+          <view class="tournament-location flex-row align-center">
+            <image src="/images/location.png" class="icon-small"></image>
+            <text>{{item.location.name}}</text>
+          </view>
+          <view class="tournament-time flex-row align-center">
+            <image src="/images/time.png" class="icon-small"></image>
+            <text>{{item.startDate}} ~ {{item.endDate}}</text>
+          </view>
+          <view class="tournament-status">
+            <text class="badge {{item.status === '报名中' ? 'badge-primary' : 'badge-secondary'}}">{{item.status}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="empty-tip">
+      <image src="/images/empty_data.png"></image>
+      <text>暂无符合条件的赛事</text>
+    </view>
+  </view>
+
+  <!-- 筛选弹窗 -->
+  <view class="filter-modal-mask" wx:if="{{showFilterModal}}" bindtap="hideFilterModal">
+    <view class="filter-modal" catchtap="stopPropagation">
+      <view class="filter-section">
+        <view class="filter-title">赛事状态</view>
+        <view class="filter-options">
+          <view class="filter-option {{statusFilter === 'all' ? 'active' : ''}}" bindtap="setStatusFilter" data-status="all">全部</view>
+          <view class="filter-option {{statusFilter === '报名中' ? 'active' : ''}}" bindtap="setStatusFilter" data-status="报名中">报名中</view>
+          <view class="filter-option {{statusFilter === '即将开始' ? 'active' : ''}}" bindtap="setStatusFilter" data-status="即将开始">即将开始</view>
+          <view class="filter-option {{statusFilter === '进行中' ? 'active' : ''}}" bindtap="setStatusFilter" data-status="进行中">进行中</view>
+          <view class="filter-option {{statusFilter === '已结束' ? 'active' : ''}}" bindtap="setStatusFilter" data-status="已结束">已结束</view>
+        </view>
+      </view>
+
+      <view class="filter-section">
+        <view class="filter-title">比赛类型</view>
+        <view class="filter-options">
+          <view class="filter-option {{typeFilter === 'all' ? 'active' : ''}}" bindtap="setTypeFilter" data-type="all">全部</view>
+          <view class="filter-option {{typeFilter === '单打' ? 'active' : ''}}" bindtap="setTypeFilter" data-type="单打">单打</view>
+          <view class="filter-option {{typeFilter === '双打' ? 'active' : ''}}" bindtap="setTypeFilter" data-type="双打">双打</view>
+          <view class="filter-option {{typeFilter === '混合' ? 'active' : ''}}" bindtap="setTypeFilter" data-type="混合">混合</view>
+        </view>
+      </view>
+
+      <view class="filter-section">
+        <view class="filter-title">赛事等级</view>
+        <view class="filter-options">
+          <view class="filter-option {{levelFilter === 'all' ? 'active' : ''}}" bindtap="setLevelFilter" data-level="all">全部</view>
+          <view class="filter-option {{levelFilter === 'A' ? 'active' : ''}}" bindtap="setLevelFilter" data-level="A">A级</view>
+          <view class="filter-option {{levelFilter === 'B' ? 'active' : ''}}" bindtap="setLevelFilter" data-level="B">B级</view>
+          <view class="filter-option {{levelFilter === 'C' ? 'active' : ''}}" bindtap="setLevelFilter" data-level="C">C级</view>
+        </view>
+      </view>
+
+      <view class="filter-actions">
+        <button class="btn-secondary" bindtap="resetFilters">重置</button>
+        <button class="btn-primary" bindtap="applyFilters">确定</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 创建赛事悬浮按钮 -->
+  <view class="float-btn" bindtap="goToCreateTournament">
+    <image src="/images/add.png"></image>
+  </view>
+</view> 

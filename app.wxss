@@ -1,0 +1,101 @@
+/**app.wxss**/
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 200rpx 0;
+    box-sizing: border-box;
+}
+
+.page {
+    padding: 20rpx;
+}
+
+.card {
+    margin-bottom: 20rpx;
+    background-color: #fff;
+    border-radius: 8rpx;
+    box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+    padding: 20rpx;
+}
+
+.btn-primary {
+    background-color: #4CAF50 !important;
+    color: white !important;
+}
+
+.btn-secondary {
+    background-color: #f8f8f8 !important;
+    color: #333 !important;
+    border: 1px solid #ddd !important;
+}
+
+.btn-danger {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.margin-top {
+    margin-top: 20rpx;
+}
+
+.margin-bottom {
+    margin-bottom: 20rpx;
+}
+
+.divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 20rpx 0;
+}
+
+.badge {
+    font-size: 24rpx;
+    padding: 4rpx 12rpx;
+    border-radius: 30rpx;
+    display: inline-block;
+}
+
+.badge-primary {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.badge-secondary {
+    background-color: #ff9800;
+    color: white;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-small {
+    font-size: 24rpx;
+    color: #999;
+}

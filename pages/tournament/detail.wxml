@@ -1,0 +1,159 @@
+<!--detail.wxml-->
+<view class="page">
+  <!-- 赛事信息 -->
+  <view class="tournament-header">
+    <image class="tournament-cover" src="{{tournament.coverImage || '/images/default_tournament.png'}}" mode="aspectFill"></image>
+    <view class="tournament-info">
+      <view class="tournament-title">{{tournament.name}}</view>
+      <view class="tournament-status">
+        <text class="badge {{tournament.status === '报名中' ? 'badge-primary' : 'badge-secondary'}}">{{tournament.status}}</text>
+      </view>
+      <view class="tournament-organizer">主办方: {{tournament.organizer || '未指定'}}</view>
+      <view wx:if="{{tournament.sponsors && tournament.sponsors.length > 0}}" class="tournament-sponsors">
+        <text>赞助商: </text>
+        <text wx:for="{{tournament.sponsors}}" wx:key="id" class="sponsor-name">{{item.name}}</text>
+        <text class="report-btn" bindtap="reportSponsor">举报</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 选项卡导航 -->
+  <view class="tab-nav">
+    <view class="tab-item {{activeTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">详情</view>
+    <view class="tab-item {{activeTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-tab="1">选手</view>
+    <view class="tab-item {{activeTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-tab="2">赛程</view>
+    <view class="tab-item {{activeTab === 3 ? 'active' : ''}}" bindtap="switchTab" data-tab="3">场馆</view>
+  </view>
+
+  <!-- 详情选项卡 -->
+  <view class="tab-content" hidden="{{activeTab !== 0}}">
+    <view class="section">
+      <view class="section-title">基本信息</view>
+      <view class="info-item">
+        <view class="info-label">比赛类型</view>
+        <view class="info-value">{{tournament.type || '未指定'}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">赛事等级</view>
+        <view class="info-value">{{tournament.level || '未指定'}}级</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">比赛时间</view>
+        <view class="info-value">{{tournament.startDate}} ~ {{tournament.endDate}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">报名截止</view>
+        <view class="info-value">{{tournament.registrationDeadline || '未指定'}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">参赛费用</view>
+        <view class="info-value">{{tournament.entryFee || '免费'}}元</view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">比赛介绍</view>
+      <view class="rich-text">{{tournament.description || '暂无比赛介绍'}}</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">奖励设置</view>
+      <view class="reward-item" wx:if="{{tournament.rewards && tournament.rewards.length > 0}}">
+        <block wx:for="{{tournament.rewards}}" wx:key="rank">
+          <view class="reward-rank">{{item.rank}}</view>
+          <view class="reward-content">
+            <view>积分: {{item.points}}</view>
+            <view wx:if="{{item.prize}}">奖品: {{item.prize}}</view>
+          </view>
+        </block>
+      </view>
+      <view wx:else class="empty-tip">暂无奖励信息</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">比赛规则</view>
+      <view class="rich-text">{{tournament.rules || '暂无比赛规则'}}</view>
+    </view>
+  </view>
+
+  <!-- 选手选项卡 -->
+  <view class="tab-content" hidden="{{activeTab !== 1}}">
+    <view class="section">
+      <view class="section-title">参赛选手</view>
+      <view class="player-list" wx:if="{{tournament.players && tournament.players.length > 0}}">
+        <view class="player-item" wx:for="{{tournament.players}}" wx:key="id">
+          <image class="player-avatar" src="{{item.avatarUrl || '/images/default_avatar.png'}}"></image>
+          <view class="player-info">
+            <view class="player-name">{{item.name}}</view>
+            <view class="player-rank">积分排名: {{item.rank || '暂无'}}</view>
+          </view>
+          <view class="player-status">
+            <text class="badge badge-primary">已报名</text>
+          </view>
+        </view>
+      </view>
+      <view wx:else class="empty-tip">暂无参赛选手</view>
+    </view>
+  </view>
+
+  <!-- 赛程选项卡 -->
+  <view class="tab-content" hidden="{{activeTab !== 2}}">
+    <view class="section">
+      <view class="section-title">比赛赛程</view>
+      <view class="schedule-list" wx:if="{{tournament.matches && tournament.matches.length > 0}}">
+        <view class="schedule-date" wx:for="{{tournament.matches}}" wx:for-item="dateItem" wx:key="date">
+          <view class="date-header">{{dateItem.date}}</view>
+          <view class="match-item" wx:for="{{dateItem.matches}}" wx:key="id" bindtap="goToMatchDetail" data-id="{{item.id}}">
+            <view class="match-time">{{item.time}}</view>
+            <view class="match-court">{{item.court}}</view>
+            <view class="match-vs">
+              <view class="player-a">{{item.playerA}}</view>
+              <view class="vs">VS</view>
+              <view class="player-b">{{item.playerB}}</view>
+            </view>
+            <view class="match-status">
+              <text class="badge {{item.status === '进行中' ? 'badge-primary' : (item.status === '已结束' ? 'badge-secondary' : '')}}">{{item.status}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:else class="empty-tip">暂无赛程安排</view>
+    </view>
+  </view>
+
+  <!-- 场馆选项卡 -->
+  <view class="tab-content" hidden="{{activeTab !== 3}}">
+    <view class="section">
+      <view class="section-title">场馆信息</view>
+      <view class="venue-map">
+        <map id="map" longitude="{{tournament.location.longitude}}" latitude="{{tournament.location.latitude}}" scale="16" markers="{{markers}}" show-location></map>
+      </view>
+      <view class="venue-info">
+        <view class="venue-name">{{tournament.location.name}}</view>
+        <view class="venue-address">{{tournament.location.address || '详细地址暂无'}}</view>
+        <view class="venue-contact" wx:if="{{tournament.location.contact}}">联系电话: {{tournament.location.contact}}</view>
+        <button class="btn-secondary" bindtap="openLocation">导航到场馆</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作按钮 -->
+  <view class="footer-btns" wx:if="{{tournament.status === '报名中'}}">
+    <button class="btn-share" open-type="share">
+      <image src="/images/share.png"></image>
+      <text>分享</text>
+    </button>
+    <button class="btn-primary btn-register" bindtap="registerTournament">
+      立即报名
+    </button>
+  </view>
+  <view class="footer-btns" wx:else>
+    <button class="btn-share" open-type="share">
+      <image src="/images/share.png"></image>
+      <text>分享</text>
+    </button>
+    <button class="btn-secondary" bindtap="saveTournament">
+      收藏赛事
+    </button>
+  </view>
+</view> 

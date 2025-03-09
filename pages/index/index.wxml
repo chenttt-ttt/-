@@ -1,0 +1,79 @@
+<!--index.wxml-->
+<view class="page">
+  <swiper indicator-dots="{{true}}" autoplay="{{true}}" interval="{{3000}}" duration="{{500}}" class="banner">
+    <block wx:for="{{banners}}" wx:key="id">
+      <swiper-item>
+        <image src="{{item.imageUrl}}" mode="aspectFill" bindtap="onBannerTap" data-id="{{item.id}}"></image>
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <view class="section">
+    <view class="section-title">热门赛事</view>
+    <view class="tournament-list">
+      <block wx:if="{{hotTournaments.length > 0}}">
+        <view class="tournament-card" wx:for="{{hotTournaments}}" wx:key="id" bindtap="goToTournamentDetail" data-id="{{item.id}}">
+          <image class="tournament-image" src="{{item.coverImage || '/images/default_tournament.png'}}" mode="aspectFill"></image>
+          <view class="tournament-info">
+            <view class="tournament-title">{{item.name}}</view>
+            <view class="tournament-location flex-row align-center">
+              <image src="/images/location.png" class="icon-small"></image>
+              <text>{{item.location.name}}</text>
+            </view>
+            <view class="tournament-time flex-row align-center">
+              <image src="/images/time.png" class="icon-small"></image>
+              <text>{{item.startDate}} ~ {{item.endDate}}</text>
+            </view>
+            <view class="tournament-status">
+              <text class="badge {{item.status === '报名中' ? 'badge-primary' : 'badge-secondary'}}">{{item.status}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="empty-tip">
+        暂无热门赛事，敬请期待
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">排行榜</view>
+    <view class="ranking-list">
+      <block wx:if="{{rankings.length > 0}}">
+        <view class="ranking-item" wx:for="{{rankings}}" wx:key="id">
+          <view class="ranking-number {{index < 3 ? 'top-three' : ''}}">{{index + 1}}</view>
+          <image class="ranking-avatar" src="{{item.avatarUrl}}"></image>
+          <view class="ranking-info">
+            <view class="ranking-name">{{item.name}}</view>
+            <view class="ranking-points">{{item.points}} 积分</view>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="empty-tip">
+        暂无排行数据，敬请期待
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">快速操作</view>
+    <view class="quick-actions">
+      <view class="action-item" bindtap="goToCreateTournament">
+        <image src="/images/create_tournament.png"></image>
+        <text>创建赛事</text>
+      </view>
+      <view class="action-item" bindtap="goToTournaments">
+        <image src="/images/all_tournaments.png"></image>
+        <text>所有赛事</text>
+      </view>
+      <view class="action-item" bindtap="goToMyTournaments">
+        <image src="/images/my_tournaments.png"></image>
+        <text>我的赛事</text>
+      </view>
+      <view class="action-item" bindtap="goToProfile">
+        <image src="/images/profile.png"></image>
+        <text>个人中心</text>
+      </view>
+    </view>
+  </view>
+</view> 

@@ -1,0 +1,179 @@
+/**index.wxss**/
+
+.banner {
+    width: 100%;
+    height: 350rpx;
+    margin-bottom: 20rpx;
+}
+
+.banner image {
+    width: 100%;
+    height: 100%;
+    border-radius: 8rpx;
+}
+
+.section {
+    margin-bottom: 30rpx;
+}
+
+.section-title {
+    font-size: 32rpx;
+    font-weight: bold;
+    margin-bottom: 20rpx;
+    position: relative;
+    padding-left: 20rpx;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6rpx;
+    width: 8rpx;
+    height: 32rpx;
+    background-color: #4CAF50;
+    border-radius: 4rpx;
+}
+
+.tournament-list {
+    width: 100%;
+}
+
+.tournament-card {
+    display: flex;
+    background-color: #fff;
+    border-radius: 8rpx;
+    box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+    margin-bottom: 20rpx;
+    overflow: hidden;
+}
+
+.tournament-image {
+    width: 240rpx;
+    height: 180rpx;
+    flex-shrink: 0;
+}
+
+.tournament-info {
+    flex: 1;
+    padding: 16rpx;
+    position: relative;
+}
+
+.tournament-title {
+    font-size: 30rpx;
+    font-weight: bold;
+    margin-bottom: 10rpx;
+    color: #333;
+}
+
+.tournament-location,
+.tournament-time {
+    font-size: 24rpx;
+    color: #666;
+    margin-bottom: 8rpx;
+}
+
+.icon-small {
+    width: 24rpx;
+    height: 24rpx;
+    margin-right: 8rpx;
+}
+
+.tournament-status {
+    position: absolute;
+    right: 16rpx;
+    bottom: 16rpx;
+}
+
+.empty-tip {
+    text-align: center;
+    color: #999;
+    padding: 40rpx 0;
+}
+
+.ranking-list {
+    background-color: #fff;
+    border-radius: 8rpx;
+    box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+    padding: 16rpx;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    padding: 16rpx 0;
+    border-bottom: 1rpx solid #f0f0f0;
+}
+
+.ranking-item:last-child {
+    border-bottom: none;
+}
+
+.ranking-number {
+    width: 50rpx;
+    height: 50rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28rpx;
+    color: #666;
+    font-weight: bold;
+    margin-right: 16rpx;
+}
+
+.top-three {
+    color: #ff9800;
+}
+
+.ranking-avatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+    margin-right: 16rpx;
+}
+
+.ranking-info {
+    flex: 1;
+}
+
+.ranking-name {
+    font-size: 28rpx;
+    font-weight: bold;
+    color: #333;
+}
+
+.ranking-points {
+    font-size: 24rpx;
+    color: #ff9800;
+}
+
+.quick-actions {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.action-item {
+    width: 48%;
+    background-color: #fff;
+    border-radius: 8rpx;
+    box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+    padding: 30rpx 0;
+    margin-bottom: 20rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-item image {
+    width: 80rpx;
+    height: 80rpx;
+    margin-bottom: 16rpx;
+}
+
+.action-item text {
+    font-size: 28rpx;
+    color: #333;
+}

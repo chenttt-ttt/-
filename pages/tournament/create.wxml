@@ -1,0 +1,192 @@
+<!--create.wxml-->
+<view class="page">
+  <form bindsubmit="submitForm">
+    <view class="form-group">
+      <view class="form-title">基本信息</view>
+      
+      <view class="form-item">
+        <text class="form-label required">赛事名称</text>
+        <input class="form-input" name="name" placeholder="请输入赛事名称" value="{{formData.name}}" />
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label required">赛事封面</text>
+        <view class="form-upload" bindtap="chooseImage">
+          <image wx:if="{{formData.coverImage}}" src="{{formData.coverImage}}" mode="aspectFill" class="upload-preview"></image>
+          <view wx:else class="upload-default">
+            <image src="/images/upload.png"></image>
+            <text>上传封面图</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label required">赛事类型</text>
+        <picker mode="selector" range="{{typeOptions}}" bindchange="bindTypeChange">
+          <view class="form-picker {{formData.type ? '' : 'placeholder'}}">
+            {{formData.type || '请选择赛事类型'}}
+          </view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label required">赛事等级</text>
+        <picker mode="selector" range="{{levelOptions}}" bindchange="bindLevelChange">
+          <view class="form-picker {{formData.level ? '' : 'placeholder'}}">
+            {{formData.level || '请选择赛事等级'}}
+          </view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label required">主办方</text>
+        <input class="form-input" name="organizer" placeholder="请输入主办方名称" value="{{formData.organizer}}" />
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">赞助商</text>
+        <view class="sponsor-list">
+          <view class="sponsor-item" wx:for="{{formData.sponsors}}" wx:key="index">
+            <input class="form-input" placeholder="请输入赞助商名称" data-index="{{index}}" value="{{item.name}}" bindinput="inputSponsorName" />
+            <view class="sponsor-delete" data-index="{{index}}" bindtap="deleteSponsor">×</view>
+          </view>
+          <view class="add-sponsor" bindtap="addSponsor">
+            <image src="/images/add.png"></image>
+            <text>添加赞助商</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="form-group">
+      <view class="form-title">时间信息</view>
+      
+      <view class="form-item">
+        <text class="form-label required">开始日期</text>
+        <picker mode="date" value="{{formData.startDate}}" start="2023-01-01" end="2030-12-31" bindchange="bindStartDateChange">
+          <view class="form-picker {{formData.startDate ? '' : 'placeholder'}}">
+            {{formData.startDate || '请选择开始日期'}}
+          </view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label required">结束日期</text>
+        <picker mode="date" value="{{formData.endDate}}" start="{{formData.startDate || '2023-01-01'}}" end="2030-12-31" bindchange="bindEndDateChange">
+          <view class="form-picker {{formData.endDate ? '' : 'placeholder'}}">
+            {{formData.endDate || '请选择结束日期'}}
+          </view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label required">报名截止日期</text>
+        <picker mode="date" value="{{formData.registrationDeadline}}" start="2023-01-01" end="{{formData.startDate || '2030-12-31'}}" bindchange="bindDeadlineChange">
+          <view class="form-picker {{formData.registrationDeadline ? '' : 'placeholder'}}">
+            {{formData.registrationDeadline || '请选择报名截止日期'}}
+          </view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">参赛费用</text>
+        <input class="form-input" type="digit" name="entryFee" placeholder="请输入参赛费用(元)" value="{{formData.entryFee}}" />
+      </view>
+    </view>
+    
+    <view class="form-group">
+      <view class="form-title">场馆信息</view>
+      
+      <view class="form-item">
+        <text class="form-label required">场馆位置</text>
+        <view class="location-picker" bindtap="chooseLocation">
+          <view wx:if="{{formData.location.name}}" class="location-info">
+            <view class="location-name">{{formData.location.name}}</view>
+            <view class="location-address">{{formData.location.address}}</view>
+          </view>
+          <view wx:else class="location-placeholder">点击选择比赛场馆位置</view>
+          <image src="/images/location.png" class="location-icon"></image>
+        </view>
+      </view>
+      
+      <view class="form-item" wx:if="{{formData.location.name}}">
+        <text class="form-label">场馆联系电话</text>
+        <input class="form-input" name="venueContact" placeholder="请输入场馆联系电话" value="{{formData.location.contact}}" bindinput="inputVenueContact" />
+      </view>
+    </view>
+    
+    <view class="form-group">
+      <view class="form-title">赛事详情</view>
+      
+      <view class="form-item">
+        <text class="form-label">赛事介绍</text>
+        <textarea class="form-textarea" name="description" placeholder="请输入赛事介绍" value="{{formData.description}}"></textarea>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">比赛规则</text>
+        <textarea class="form-textarea" name="rules" placeholder="请输入比赛规则" value="{{formData.rules}}"></textarea>
+      </view>
+    </view>
+    
+    <view class="form-group">
+      <view class="form-title">奖励设置</view>
+      
+      <view class="reward-list">
+        <view class="reward-item" wx:for="{{formData.rewards}}" wx:key="index">
+          <view class="reward-header">
+            <text class="reward-rank">{{item.rank}}</text>
+            <view class="reward-delete" data-index="{{index}}" bindtap="deleteReward">删除</view>
+          </view>
+          <view class="reward-content">
+            <view class="form-item">
+              <text class="form-label">积分</text>
+              <input class="form-input" type="number" data-index="{{index}}" data-field="points" value="{{item.points}}" bindinput="inputRewardField" />
+            </view>
+            <view class="form-item">
+              <text class="form-label">奖品</text>
+              <input class="form-input" data-index="{{index}}" data-field="prize" value="{{item.prize}}" bindinput="inputRewardField" />
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="add-reward" bindtap="showAddRewardModal">
+        <image src="/images/add.png"></image>
+        <text>添加奖励</text>
+      </view>
+    </view>
+    
+    <view class="submit-bar">
+      <button class="btn-secondary" bindtap="onCancel">取消</button>
+      <button class="btn-primary" form-type="submit">确认创建</button>
+    </view>
+  </form>
+  
+  <!-- 添加奖励弹窗 -->
+  <view class="modal-mask" wx:if="{{showRewardModal}}" bindtap="hideAddRewardModal">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-title">添加奖励</view>
+      
+      <view class="form-item">
+        <text class="form-label">名次</text>
+        <input class="form-input" placeholder="例如：冠军、亚军、第三名" value="{{newReward.rank}}" bindinput="inputNewRewardField" data-field="rank" />
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">积分</text>
+        <input class="form-input" type="number" placeholder="例如：500" value="{{newReward.points}}" bindinput="inputNewRewardField" data-field="points" />
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">奖品</text>
+        <input class="form-input" placeholder="例如：奖杯+奖金1000元" value="{{newReward.prize}}" bindinput="inputNewRewardField" data-field="prize" />
+      </view>
+      
+      <view class="modal-btns">
+        <button class="btn-secondary" bindtap="hideAddRewardModal">取消</button>
+        <button class="btn-primary" bindtap="addReward">确定</button>
+      </view>
+    </view>
+  </view>
+</view> 

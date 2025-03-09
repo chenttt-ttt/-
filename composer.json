@@ -1,0 +1,17 @@
+{
+    "name": "myvendor/myproject",
+    "autoload": {
+        "psr-4": {
+            "Myvendor\\Myproject\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "chenttt-ttt",
+            "email": "3423729316@qq.com"
+        }
+    ],
+    "require": {
+        "monolog/monolog": "^3.8"
+    }
+}
